@@ -1,8 +1,18 @@
 defmodule Github do
-  def score(username \\ IO.gets "Github username: ") do
+  
+  def score(username \\ nil), do: setup(username)
+
+  def setup(nil) do
+    username = IO.gets "Github username: "
     username
     |> String.replace_trailing("\n", "")
-    |> buildURL
+    |> start
+  end
+
+  def setup(username), do: start(username)
+
+  def start(username) do
+    buildURL(username)
     |> makeRequest
     |> Map.get(:body)
     |> Poison.Parser.parse!
